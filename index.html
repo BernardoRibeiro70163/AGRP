@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAZID - Análise de Riscos Industriais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .header p {
+            text-align: center;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-menu {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #2c3e50;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .section-content {
+            padding: 30px;
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .equipment-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .equipment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .equipment-title {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .equipment-details {
+            padding: 20px;
+        }
+
+        .detail-section {
+            margin-bottom: 15px;
+        }
+
+        .detail-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 2px;
+            display: inline-block;
+        }
+
+        .detail-content {
+            margin-left: 10px;
+            color: #555;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .risk-high {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .risk-medium {
+            background: #f39c12;
+            color: white;
+        }
+
+        .risk-low {
+            background: #27ae60;
+            color: white;
+        }
+
+        .materials-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .materials-table th,
+        .materials-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .materials-table th {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .materials-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .materials-table tr:hover {
+            background: #e3f2fd;
+        }
+
+        .icon {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, #f8d7da 0%, #fab1a0 100%);
+            border: 1px solid #dc3545;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #d1ecf1 0%, #74b9ff 100%);
+            border: 1px solid #17a2b8;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            color: white;
+        }
+
+        .download-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-menu ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .equipment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏭 HAZID - Análise de Riscos Industriais</h1>
+            <p>Identificação de Perigos e Avaliação de Riscos para Processo de Produção de Benzimidazolona</p>
+            <div class="download-section">
+                <button class="download-btn" onclick="downloadPDF()">
+                    📄 Descarregar Relatório PDF
+                </button>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#equipamentos">⚙️ Equipamentos</a></li>
+                <li><a href="#materiais">🧪 Materiais</a></li>
+                <li><a href="#utilidades">⚡ Utilidades</a></li>
+                <li><a href="#controlo">🎛️ Controlo</a></li>
+                <li><a href="#seguranca">🛡️ Segurança</a></li>
+                <li><a href="#outros">📋 Outros Fatores</a></li>
+            </ul>
+        </nav>
+
+        <section id="equipamentos" class="section">
+            <div class="section-header">
+                ⚙️ Falhas em Equipamentos Principais
+            </div>
+            <div class="section-content">
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-title">🔥 Reator</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Volume: 5 m³ (operado a 80% = 4 m³)<br>
+                                    • Temperatura: 160-180°C durante 3,5h<br>
+                                    • Pressão: 1-2 bar<br>
+                                    • Material: AISI 316L ou superior
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Sobreaquecimento → runaway térmico<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Falha de agitação → zonas quentes<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Falha do selo mecânico → fuga NH₃<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Corrosão interna → fissuras
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🎯 Receptores</div>
+                                <div class="detail-content">
+                                    • Operadores próximos<br>
+                                    • Ambiente da instalação<br>
+                                    • Equipamentos adjacentes
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • PSV dimensionada para 2,5 bar<br>
+                                    • Redundância de sensores (T e P)<br>
+                                    • Intertravamentos automáticos<br>
+                                    • Manutenção preventiva (500h)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">❄️ Condensador</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Temperaturas: vapor 160-180°C / água 25-30°C<br>
+                                    • Pressão: até 10 bar<br>
+                                    • Material: AISI 316L<br>
+                                    • Manutenção: cada 3 meses
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falha de refrigeração<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Bloqueios em tubos (Ø25mm)<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Rutura de tubagem
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Válvulas de alívio (9 bar)<br>
+                                    • Sistema de backup<br>
+                                    • Monitorização contínua T/P<br>
+                                    • Limpezas periódicas
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">🌊 Scrubber</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Solução de lavagem pH 6-8<br>
+                                    • Caudal mínimo: 1,8 m³/h<br>
+                                    • Temperatura: < 40°C<br>
+                                    • Material: AISI 316L (4mm mín.)
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falha da bomba → NH₃ > 50 ppm<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> pH inadequado<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Entupimentos/incrustações
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Monitorização contínua pH/caudal/T<br>
+                                    • Bomba de reserva<br>
+                                    • Limpeza quinzenal<br>
+                                    • Alarmes de falha
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">🔧 Linhas, Flanges e Válvulas</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Material: aço inox 316L, 3mm mín.<br>
+                                    • Pressão: até 16 bar<br>
+                                    • Temperatura: até 180°C<br>
+                                    • Parafusos M20: torque 150 Nm
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Fuga em flanges<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Rutura de tubagem<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Falha em válvulas
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Verificação semanal de flanges<br>
+                                    • Ensaios de pressão regulares<br>
+                                    • Sistemas de detecção de fugas<br>
+                                    • Formação de operadores
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="materiais" class="section">
+            <div class="section-header">
+                🧪 Materiais e Substâncias
+            </div>
+            <div class="section-content">
+                <table class="materials-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Propriedades Críticas</th>
+                            <th>Principais Riscos</th>
+                            <th>Medidas de Mitigação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>🔵 Amoníaco (NH₃)</strong></td>
+                            <td>
+                                • Gás tóxico, altamente corrosivo<br>
+                                • Limite: 25 ppm (8h) / 35 ppm (STEL)<br>
+                                • Ponto ebulição: -33°C
+                            </td>
+                            <td>
+                                • <span class="risk-level risk-high">ALTO</span> Inalação → problemas respiratórios<br>
+                                • <span class="risk-level risk-high">ALTO</span> Falha scrubber → emissões<br>
+                                • <span class="risk-level risk-medium">MÉDIO</span> Corrosão de equipamentos
+                            </td>
+                            <td>
+                                • Detetores fixos (alarme >25 ppm)<br>
+                                • Scrubber dimensionado<br>
+                                • Materiais anticorrosão<br>
+                                • Planos de emergência
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>🔴 Tolueno</strong></td>
+                            <td>
+                                • Inflamável (ponto inflamação: 4°C)<br>
+                                • LEL: 1,2% v/v<br>
+                                • Tóxico por inalação (SNC)
+                            </td>
+                            <td>
+                                • <span class="risk-level risk-high">ALTO</span> Incêndio/explosão<br>
+                                • <span class="risk-level risk-medium">MÉDIO</span> Inalação > 50 ppm<br>
+                                • <span class="risk-level risk-medium">MÉDIO</span> Derrame → nuvem inflamável
+                            </td>
+                            <td>
+                                • Adição <90°C com extração<br>
+                                • Linhas antiestáticas<br>
+                                • Bacias de contenção<br>
+                                • Formação ATEX
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>⚪ Ureia</strong></td>
+                            <td>
+                                • Sólido cristalino (fusão: 133°C)<br>
+                                • Decomposição → liberta NH₃<br>
+                                • Sensível à humidade
+                            </td>
+                            <td>
+                                • <span class="risk-level risk-medium">MÉDIO</span> Decomposição → NH₃ (50 ppm)<br>
+                                • <span class="risk-level risk-low">BAIXO</span> Entupimentos por humidade<br>
+                                • <span class="risk-level risk-low">BAIXO</span> Dosagem incorreta
+                            </td>
+                            <td>
+                                • Armazenamento seco (<40% HR)<br>
+                                • Válvulas bem vedadas<br>
+                                • Monitorização temperatura<br>
+                                • Formação operadores
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>🟡 Anilina Substituída</strong></td>
+                            <td>
+                                • Líquido tóxico e sensibilizante<br>
+                                • Viscoso<br>
+                                • Perigoso por contacto dérmico
+                            </td>
+                            <td>
+                                • <span class="risk-level risk-high">ALTO</span> Exposição dérmica/inalação<br>
+                                • <span class="risk-level risk-medium">MÉDIO</span> Derrame → contaminação<br>
+                                • <span class="risk-level risk-medium">MÉDIO</span> Falha dosagem
+                            </td>
+                            <td>
+                                • Tanques com bacias (110% volume)<br>
+                                • Bombas compatíveis<br>
+                                • EPI adequado<br>
+                                • Deteção de vapores orgânicos
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>🟤 Benzimidazolona</strong></td>
+                            <td>
+                                • Produto final sólido/pó<br>
+                                • Granulometria fina (<100 µm)<br>
+                                • Potencialmente irritante
+                            </td>
+                            <td>
+                                • <span class="risk-level risk-medium">MÉDIO</span> Inalação de poeiras<br>
+                                • <span class="risk-level risk-low">BAIXO</span> Irritação/sensibilização<br>
+                                • <span class="risk-level risk-low">BAIXO</span> Contaminação ambiental
+                            </td>
+                            <td>
+                                • Sistemas de contenção<br>
+                                • Exaustão local e filtros<br>
+                                • Armazenamento estanque<br>
+                                • Gestão adequada de resíduos
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="utilidades" class="section">
+            <div class="section-header">
+                ⚡ Falhas de Fornecimento de Energia/Utilidades
+            </div>
+            <div class="section-content">
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-title">⚡ Eletricidade</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Consumo típico: 10 kW<br>
+                                    • Tensão: até 600V<br>
+                                    • Disjuntores: até 63A<br>
+                                    • Proteção: IP54
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falha total → runaway<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Curto-circuito → incêndio<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Choques elétricos
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • UPS/gerador para sistemas críticos<br>
+                                    • SPDA (até 100 kA)<br>
+                                    • Manutenção preventiva<br>
+                                    • Plano de contingência
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">💧 Água e Aquecimento/Refrigeração</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Água quente: 160-180°C<br>
+                                    • Pressão: 3-6 bar<br>
+                                    • pH: 6,5-8,5<br>
+                                    • Dureza: <200 ppm
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Interrupção aquecimento<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Falha refrigeração<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Vazamentos → inundação
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Monitorização contínua P/T/caudal<br>
+                                    • Reservas/tanques contingência<br>
+                                    • Tratamento anti-incrustante<br>
+                                    • Sistema auxiliar
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">🔄 Bombas</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Material: AISI 316L<br>
+                                    • Selos: grafite/cerâmica<br>
+                                    • Temperatura: até 150°C<br>
+                                    • Pressão: até 16 bar
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falha de selagem<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Avaria mecânica<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Cavitação
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Manutenção preventiva<br>
+                                    • Monitorização vibração/T<br>
+                                    • Proteções cavitação<br>
+                                    • Bomba de reserva
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="controlo" class="section">
+            <div class="section-header">
+                🎛️ Sistema de Controlo e Instrumentação
+            </div>
+            <div class="section-content">
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-title">🖥️ Controladores</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Temperatura: até 70°C<br>
+                                    • Humidade: até 85%<br>
+                                    • Resistente a NH₃/tolueno<br>
+                                    • Isolamento anti-corrosão
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falha T/P → descontrolo<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Perda comunicação<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Reset inesperado
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Redundância em controladores críticos<br>
+                                    • Alarmes de falha<br>
+                                    • Modo manual override<br>
+                                    • Manutenção preventiva
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">📊 Sensores</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Resistentes à corrosão<br>
+                                    • Compatíveis NH₃/tolueno/ácidos<br>
+                                    • Alta temperatura: 160-180°C<br>
+                                    • Precisão calibrada
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falta resposta T/P<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Falsos positivos/negativos<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Falha total → perda monitorização
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Calibração regular<br>
+                                    • Redundância em pontos críticos<br>
+                                    • Alarmes "sensor fail"<br>
+                                    • Testes em campo
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="seguranca" class="section">
+            <div class="section-header">
+                🛡️ Procedimentos de Segurança e Manutenção
+            </div>
+            <div class="section-content">
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-title">🔧 Manutenção</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Requisitos</div>
+                                <div class="detail-content">
+                                    • Materiais anticorrosivos em alta T<br>
+                                    • Substituição periódica válvulas/juntas<br>
+                                    • Redundância em componentes críticos<br>
+                                    • Procedimentos rigorosos
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Fugas após intervenção<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Erro reinstalação sensores<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Falha sistema refrigeração
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Plano manutenção preventiva<br>
+                                    • Formação constante equipa<br>
+                                    • EPI adequado<br>
+                                    • Verificações finais (teste pressão)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">🚨 Procedimentos de Segurança</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Requisitos</div>
+                                <div class="detail-content">
+                                    • Sinalética resistente a químicos/T>120°C<br>
+                                    • EPI específico (máscaras, luvas)<br>
+                                    • Identificação zonas perigosas<br>
+                                    • Sistemas de ventilação/alarme NH₃
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Emissão NH₃ sem alerta<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Exposição gases tóxicos<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Incêndio/explosão
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Formação/certificação operadores<br>
+                                    • Simulação cenários emergência<br>
+                                    • Alarmes gases bem configurados<br>
+                                    • Inspeção periódica dispositivos
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">⚙️ Procedimentos de Operação</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Requisitos</div>
+                                <div class="detail-content">
+                                    • Materiais resistentes ao calor<br>
+                                    • Pisos/paredes compatíveis químicos<br>
+                                    • Sequência rigorosa adição reagentes<br>
+                                    • Tempo residência calculado
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Erro sequência adição<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Tempo residência incorreto<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Falha monitorização NH₃
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Manual operação detalhado<br>
+                                    • Sistema intertravamento<br>
+                                    • Treino contínuo operadores<br>
+                                    • Automação controlo adição
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="outros" class="section">
+            <div class="section-header">
+                📋 Outros Fatores Críticos
+            </div>
+            <div class="section-content">
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-title">⚙️ Intertravamentos</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Válvulas/atuadores anticorrosão<br>
+                                    • Cablagem protegida gases/humidade<br>
+                                    • Configuração atualizada<br>
+                                    • Dependência leituras sensores
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falha pressão → sobrepressão<br>
+                                    • <span class="risk-level risk-high">ALTO</span> Falha temperatura → runaway<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Configuração errada
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Revisão/atualização frequente<br>
+                                    • Redundância sistemas críticos<br>
+                                    • Testes regulares (simulação)<br>
+                                    • Documentação clara/formação
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">🔔 Alarmes</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Sensores compatibilidade química<br>
+                                    • Indicadores IP66/ATEX<br>
+                                    • Resistentes calor/humidade/poeira<br>
+                                    • Configuração adequada setpoints
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Falha alarmes T/P críticos<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Desativação acidental<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Perda energia sem UPS
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Redundância alarmes críticos<br>
+                                    • Formação interpretação/resposta<br>
+                                    • Revisão periódica setpoints<br>
+                                    • Testes regulares (simulação)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">📦 Armazenamento</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Especificações</div>
+                                <div class="detail-content">
+                                    • Tanques anticorrosivos (aço inox)<br>
+                                    • Temperatura controlada<br>
+                                    • Segregação produtos incompatíveis<br>
+                                    • Zonas isoladas áreas críticas
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-high">ALTO</span> Fugas NH₃/tolueno<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Aquecimento excessivo<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Contaminação cruzada
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Monitorização contínua T/P<br>
+                                    • Inspeções regulares estanqueidade<br>
+                                    • Treino operadores derrames<br>
+                                    • Ventilação eficiente
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">🏗️ Layout da Planta</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Requisitos</div>
+                                <div class="detail-content">
+                                    • Distâncias segurança adequadas<br>
+                                    • Espaço manutenção/emergência<br>
+                                    • Fluxos operacionais claros<br>
+                                    • Materiais resistentes carga térmica
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Falta espaço evacuação<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Atraso manutenção<br>
+                                    • <span class="risk-level risk-low">BAIXO</span> Áreas congestionadas
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Revisão layout otimização<br>
+                                    • Zonas emergência evacuação<br>
+                                    • Estudos layout normas ATEX<br>
+                                    • Modelos 3D validação
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-title">🌍 Fatores Ambientais</div>
+                        <div class="equipment-details">
+                            <div class="detail-section">
+                                <div class="detail-title">📐 Condições</div>
+                                <div class="detail-content">
+                                    • Temperaturas até 50°C / HR até 80%<br>
+                                    • Chuva/vento alteram dispersão gases<br>
+                                    • Salinidade acelera corrosão<br>
+                                    • Variações climáticas sazonais
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">⚠️ Principais Riscos</div>
+                                <div class="detail-content">
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Fugas gases dispersão irregular<br>
+                                    • <span class="risk-level risk-medium">MÉDIO</span> Acúmulo poluentes solo/água<br>
+                                    • <span class="risk-level risk-low">BAIXO</span> Reações com humidade
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <div class="detail-title">🛡️ Medidas de Mitigação</div>
+                                <div class="detail-content">
+                                    • Monitorização ambiental contínua<br>
+                                    • Ventilação eficiente<br>
+                                    • Sistemas contenção secundária<br>
+                                    • Ajuste operações condições climáticas
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>⚠️ Avisos Críticos de Segurança</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Amoníaco:</strong> Evacuação obrigatória se concentração > 50 ppm em espaço confinado</li>
+                        <li><strong>Tolueno:</strong> Atmosfera explosiva > 1,2% v/v - eliminar fontes de ignição</li>
+                        <li><strong>Anilina:</strong> Evacuação necessária se vapores > 1 ppm</li>
+                        <li><strong>Temperatura:</strong> Runaway térmico possível se T > 180°C sem controlo</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <h3>🚨 Consequências Potenciais Graves</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Explosão no reator:</strong> Danos materiais, ferimentos ou morte</li>
+                        <li><strong>Libertação tóxica NH₃:</strong> Risco pessoal e área circundante</li>
+                        <li><strong>Incêndio/explosão tolueno:</strong> Danos estruturais, responsabilidade legal</li>
+                        <li><strong>Multas ambientais:</strong> Até 15.000€ por infração de poluição atmosférica</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3>📊 Limites Críticos de Operação</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Pressão máxima reator:</strong> 2,5 bar (PSV ativação)</li>
+                        <li><strong>Temperatura máxima processo:</strong> 180°C</li>
+                        <li><strong>NH₃ limite exposição:</strong> 25 ppm (8h) / 35 ppm (STEL)</li>
+                        <li><strong>Tolueno LEL:</strong> 1,2% v/v</li>
+                        <li><strong>Caudal mínimo scrubber:</strong> 1,8 m³/h</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>📋 <strong>HAZID - Análise de Riscos Industriais</strong></p>
+            <p>Documento técnico para identificação de perigos e avaliação de riscos no processo de produção de Benzimidazolona</p>
+            <p><em>Revisão regular recomendada conforme alterações no processo ou após incidentes</em></p>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            // URL direta do seu Google Drive - CONFIGURADA CORRETAMENTE
+            const pdfUrl = 'https://drive.google.com/uc?export=download&id=1AYuf67H9Uc5C184Ec7pInBo_m2Dfmozs';
+            
+            console.log('🔄 Iniciando download do HAZID PDF...');
+            console.log('🌐 URL configurada:', pdfUrl);
+            
+            // Fazer download direto
+            downloadFromGoogleDrive(pdfUrl);
+        }
+        
+        function downloadFromGoogleDrive(url) {
+            console.log(`📄 Iniciando download de: ${url}`);
+            
+            // Método 1: Download direto via link
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = 'HAZID_TABLE_Analise_Riscos.pdf';
+            downloadLink.target = '_blank';
+            downloadLink.style.display = 'none';
+            
+            // Adicionar ao DOM
+            document.body.appendChild(downloadLink);
+            
+            // Executar download
+            downloadLink.click();
+            
+            // Feedback ao utilizador
+            setTimeout(() => {
+                alert(`📄 Download do HAZID iniciado com sucesso! ✅
+
+🔗 Fonte: Google Drive
+📁 Ficheiro: HAZID_TABLE_Analise_Riscos.pdf
+
+💡 Verificações:
+• O download deve aparecer na barra inferior do navegador
+• Verifique a pasta de Downloads do seu dispositivo
+• Em dispositivos móveis, verifique as notificações
+
+⚠️ Se o download não iniciar:
+• Verifique se permite downloads automáticos
+• Certifique-se de que tem conexão à internet
+• Tente novamente em alguns segundos`);
+                
+                console.log('✅ Download processado com sucesso!');
+            }, 1500);
+            
+            // Limpeza
+            setTimeout(() => {
+                if (document.body.contains(downloadLink)) {
+                    document.body.removeChild(downloadLink);
+                }
+            }, 5000);
+            
+            // Método alternativo - abrir em nova aba se o download falhar
+            setTimeout(() => {
+                if (confirm('🤔 O download não iniciou automaticamente?\n\nPretende abrir o ficheiro numa nova aba?')) {
+                    window.open(url, '_blank');
+                }
+            }, 8000);
+        }
+        
+        // Função para testar o download (para desenvolvimento/debug)
+        function testDownload() {
+            console.log('🧪 Testando função de download...');
+            downloadPDF();
+        }
+        
+        // Função para mostrar informações do sistema (para suporte técnico)
+        function showSystemInfo() {
+            const info = `🔧 INFORMAÇÕES DO SISTEMA HAZID
+
+📄 Ficheiro PDF: HAZID_TABLE_Analise_Riscos.pdf
+🌐 Google Drive ID: 1AYuf67H9Uc5C184Ec7pInBo_m2Dfmozs
+🔗 URL Configurada: https://drive.google.com/uc?export=download&id=1AYuf67H9Uc5C184Ec7pInBo_m2Dfmozs
+
+📱 Navegador: ${navigator.userAgent.split(')')[0]})
+🖥️ Plataforma: ${navigator.platform}
+📶 Online: ${navigator.onLine ? 'Sim' : 'Não'}
+
+💡 Este sistema está pronto para QR Code!`;
+            
+            alert(info);
+            console.log('📊 Informações do sistema exibidas');
+        }
+
+        // Smooth scrolling para navegação
+        document.querySelectorAll('.nav-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
